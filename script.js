@@ -5,25 +5,32 @@ let headers = new Headers({
     "Authorization" : api_key
 });
 
-async function discogsFetch () {
 
     let discogsBlockContainer = document.createElement('div');
     discogsBlockContainer.setAttribute('id', `#discogs-container`);
     discogsBlockContainer.classList.add('discogs-container'); 
     document.body.appendChild(discogsBlockContainer);
 
-    const response = await fetch("https://api.discogs.com/users/tonewheelz/collection/folders/0/releases?page=1&per_page=12", {
+
+    //async function discogsFetch () {
+
+const getReleases = async (username, page, limit) => {
+    const response = await fetch(`https://api.discogs.com/users/${username}/collection/folders/0/releases?page=${page}&per_page=${limit}`, {
         method: 'GET',
         headers: headers
     })
 
     const responseJSON = await response.json();
-    console.log(responseJSON);
+    //console.log(responseJSON);
+    
+    return await responseJSON;
+}
 
 
 
+const displayReleases = (discogsReleases) => {
 
-    responseJSON.releases.forEach ( release => {
+    discogsReleases.releases.forEach ( release => {
 
         let artistName = release.basic_information.artists[0].name;
         let albumName = release.basic_information.title;
@@ -83,7 +90,17 @@ async function discogsFetch () {
     });
 }
 
-discogsFetch();
+let currentPage = 1;
+let username = 'tonewheelz';
+const limit = 12;
+
+setTimeout(async () => {
+
+    const discogsResponse = await getReleases(username,currentPage,limit);
+    
+    displayReleases(discogsResponse);
+
+}, 500);
 
 
 
