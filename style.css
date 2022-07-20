@@ -1,0 +1,32 @@
+.discogs-container {
+    
+    max-width: 700px;
+    min-width: 200px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    
+}
+
+.discogs-card {
+    height: 350px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 0px;
+    padding: 0px;
+}
+
+p {
+    padding: 0px;
+    margin: 0px;
+}
+
+.album-cover-div {
+    height: 150px;
+}
+
+.album-title-div {
+    height: 75px;
+    background-color: rgb(246, 246, 246);
+}
+
