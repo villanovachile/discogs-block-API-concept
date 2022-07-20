@@ -21,14 +21,16 @@ async function discogsFetch () {
     console.log(responseJSON);
 
 
-    for (let i = 0; i < responseJSON.releases.length; i++) {
 
-        let artistName = responseJSON.releases[i].basic_information.artists[0].name;
-        let albumName = responseJSON.releases[i].basic_information.title;
-        let releaseYear = responseJSON.releases[i].basic_information.year;
-        let format = responseJSON.releases[i].basic_information.formats[0].name;
-        let albumCover = responseJSON.releases[i].basic_information.thumb;
-        let gridNumber = `gridNumber${i}`;
+
+    responseJSON.releases.forEach ( release => {
+
+        let artistName = release.basic_information.artists[0].name;
+        let albumName = release.basic_information.title;
+        let releaseYear = release.basic_information.year;
+        let format = release.basic_information.formats[0].name;
+        let albumCover = release.basic_information.thumb;
+        //let gridNumber = `gridNumber${i}`;
 
         if (releaseYear == 0 | releaseYear == null) {
             releaseYear = 'Unknown';
@@ -40,17 +42,17 @@ async function discogsFetch () {
 
         // Parent container
         gridNumber = document.createElement('div');
-        gridNumber.setAttribute('id', `discogs-release${i}`);
+        //gridNumber.setAttribute('id', `discogs-release${i}`);
         gridNumber.classList.add('discogs-card');  
 
         // album title container
         albumTitleDiv = document.createElement('div');
-        albumTitleDiv.classList.add('album-title-div');
+        //albumTitleDiv.classList.add('album-title-div');
         gridNumber.appendChild(albumTitleDiv)
 
         // album cover container
         albumCoverDiv = document.createElement('div');
-        albumCoverDiv.classList.add('album-cover-div');
+        //albumCoverDiv.classList.add('album-cover-div');
         gridNumber.appendChild(albumCoverDiv)
 
         // Album title H4
@@ -78,7 +80,7 @@ async function discogsFetch () {
         releaseYearCard.appendChild(document.createTextNode('Release Year: ' + releaseYear));
         gridNumber.appendChild(releaseYearCard)
         discogsBlockContainer.appendChild(gridNumber);
-    }
+    });
 }
 
 discogsFetch();
@@ -90,4 +92,5 @@ discogsFetch();
     console.error(error);
 
 });
+
 */
