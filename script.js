@@ -102,10 +102,12 @@ const displayReleases = (discogsReleases) => {
 
 const showLoader = () => {
     loader.classList.add('show');
+    loading = true;
 };
 
 const hideLoader = () => {
     loader.classList.remove('show');
+    loading = false
 };
 
 
@@ -113,11 +115,11 @@ let currentPage = 1;
 let username = user;
 const limit = 12;
 let total = 0;
+let loading = false;
 
 
 const moreReleases = (page, limit, total) => {
     const indexStart = (page - 1) * limit + 1;
-    console.log(page, limit, indexStart, total)
     return total === 0 || indexStart < total;
 };
 
@@ -125,6 +127,7 @@ const moreReleases = (page, limit, total) => {
 
 
 const loadReleases = async (page, limit) => {
+    //console.log(page, limit, total)
     
     showLoader();
 
@@ -152,8 +155,8 @@ window.addEventListener('scroll', () => {
         clientHeight
     } = document.documentElement;
 
-    if (scrollTop + clientHeight >= scrollHeight - 1 &&
-        moreReleases(currentPage, limit, total)) {
+    if (scrollTop + clientHeight >= scrollHeight - 5 &&
+        moreReleases(currentPage, limit, total) && !loading) {
         currentPage++;
         loadReleases(currentPage, limit);
     
