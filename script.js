@@ -1,7 +1,7 @@
 let headers = new Headers({
     "Accept"       : "application/json",
     "Content-Type" : "application/json",
-    "User-Agent"   : "DiscgosBlock/1.0",
+    "User-Agent"   : "DiscogsBlock/1.0",
     "Authorization" : api_key
 });
 
