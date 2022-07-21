@@ -22,8 +22,6 @@ let headers = new Headers({
 
 
 
-    //async function discogsFetch () {
-
 const getReleases = async (username, page, limit) => {
     const response = await fetch(`https://api.discogs.com/users/${username}/collection/folders/0/releases?page=${page}&per_page=${limit}`, {
         method: 'GET',
