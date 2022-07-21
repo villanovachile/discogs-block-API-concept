@@ -5,11 +5,21 @@ let headers = new Headers({
     "Authorization" : api_key
 });
 
+    let discogsBlockParent = document.createElement('div');
+    discogsBlockParent.setAttribute('id', `#discogs-block-parent`);
+    discogsBlockParent.classList.add('discogs-block-parent'); 
+    document.body.appendChild(discogsBlockParent);
 
     let discogsBlockContainer = document.createElement('div');
     discogsBlockContainer.setAttribute('id', `#discogs-container`);
     discogsBlockContainer.classList.add('discogs-container'); 
-    document.body.appendChild(discogsBlockContainer);
+    discogsBlockParent.appendChild(discogsBlockContainer);
+    
+    let loader = document.createElement('div');
+    loader.setAttribute('id', `#loader`);
+    loader.classList.add('loader'); 
+    discogsBlockParent.appendChild(loader);
+
 
 
     //async function discogsFetch () {
@@ -90,19 +100,72 @@ const displayReleases = (discogsReleases) => {
     });
 }
 
+const showLoader = () => {
+    loader.classList.add('show');
+};
+
+const hideLoader = () => {
+    loader.classList.remove('show');
+};
+
+
 let currentPage = 1;
-let username = 'tonewheelz';
+let username = user;
 const limit = 12;
+let total = 0;
 
-setTimeout(async () => {
 
-    const discogsResponse = await getReleases(username,currentPage,limit);
+const moreReleases = (page, limit, total) => {
+    const indexStart = (page - 1) * limit + 1;
+    return total === 0 || indexStart < total;
+};
+
+
+
+
+const loadReleases = async (page, limit) => {
     
-    displayReleases(discogsResponse);
+    showLoader();
 
-}, 500);
+    setTimeout(async () => {
+        try {
+            if (moreReleases(page, limit, total)){
+                const discogsResponse = await getReleases(username,currentPage,limit);
+                
+                displayReleases(discogsResponse);
+                total = discogsResponse.pagination.items
+            }  
+        } catch (error) {
+        console.log(error.message);
+        } finally {
+            hideLoader();
+        }
+    }, 500);
+
+};
+
+window.addEventListener('scroll', () => {
+    const {
+        scrollTop,
+        scrollHeight,
+        clientHeight
+    } = document.documentElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 5 &&
+        moreReleases(currentPage, limit, total)) {
+        currentPage++;
+        loadReleases(currentPage, limit);
+    
+    }
+    
+
+}, {
+    passive: true
+});
 
 
+
+loadReleases (currentPage, limit);
 
 /*.catch(error => {
     console.log('error!');
