@@ -29,11 +29,11 @@ const getReleases = async (username, page, limit) => {
         method: 'GET',
         headers: headers
     })
-
-    const responseJSON = await response.json();
-    //console.log(responseJSON);
+    if (!response.ok) {
+        throw new Error(`An error occurred: ${response.status}`);
+    }
     
-    return await responseJSON;
+    return await response.json();
 }
 
 
@@ -117,6 +117,7 @@ let total = 0;
 
 const moreReleases = (page, limit, total) => {
     const indexStart = (page - 1) * limit + 1;
+    console.log(page, limit, indexStart, total)
     return total === 0 || indexStart < total;
 };
 
@@ -151,7 +152,7 @@ window.addEventListener('scroll', () => {
         clientHeight
     } = document.documentElement;
 
-    if (scrollTop + clientHeight >= scrollHeight - 5 &&
+    if (scrollTop + clientHeight >= scrollHeight - 1 &&
         moreReleases(currentPage, limit, total)) {
         currentPage++;
         loadReleases(currentPage, limit);
@@ -167,10 +168,3 @@ window.addEventListener('scroll', () => {
 
 loadReleases (currentPage, limit);
 
-/*.catch(error => {
-    console.log('error!');
-    console.error(error);
-
-});
-
-*/
