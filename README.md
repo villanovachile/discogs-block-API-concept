@@ -1,3 +1,7 @@
+Completed plugin: https://github.com/villanovachile/blocks-for-discogs
+
+---
+
 ### Discogs Block API Concept
 
 This is a working proof of concept for my WordPress Guternberg block using JavaScript. This script makes an API call to the Discogs.com API, and displays the collection of Discogs.com user in a grid.
